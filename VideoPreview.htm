@@ -7,9 +7,8 @@
     <title>Document</title>
 </head>
 <body>
-<!-- <img src="GOPR8348.THM">
-     -->
-<div>
+<main>
+    <div>
  <label for=""speed">Playbackspeed</label>    
     <select id="speed" onchange="changeSpeed(this.value);" >
          <option value="0.5">0,5x</option>
@@ -21,11 +20,17 @@
      </select>
 </div>      
 
-<button class="read-dir">getDir</button><br />
-
+<button class="read-dir">Choose Direcory</button><br />
+</main>
 
 
  <script>
+    if (!("showDirectoryPicker" in window)) {
+        alert("This browser does not support 'showDirectoryPicker'");
+        document.querySelector('main').style.display="none"
+    }
+
+
     var arrFiles=[];
 
     function stopAll(videoFileName) {
