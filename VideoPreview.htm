@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<!-- <img src="GOPR8348.THM">
+     -->
+<div>
+ <label for=""speed">Playbackspeed</label>    
+    <select id="speed" onchange="changeSpeed(this.value);" >
+         <option value="0.5">0,5x</option>
+         <option value="1.0">1x</option>
+         <option value="2.0" checked>2x</option>
+         <option value="5.0">5x</option>
+         <option value="10.0">10x</option>
+         <option value="15.0">20x</option>
+     </select>
+</div>      
+
+<button class="read-dir">getDir</button><br />
+
+
+
+ <script>
+    var arrFiles=[];
+
+    function stopAll(videoFileName) {
+        videos=document.getElementsByTagName("video")
+        if (videos.length == 0) return;
+        for (let i=0;i < videos.length; i++) {
+            videos[i].playbackRate  = speed.value
+            if ( !videos[i].paused ) videos[i].pause();
+        }
+        document.getElementById(videoFileName).play();
+    }
+
+
+    function changeSpeed() {
+        videos=document.getElementsByTagName("video")
+        if (videos.length == 0) return;
+        for (let i=0;i < videos.length; i++) {
+            videos[i].playbackRate  = speed.value
+        }
+    }
+
+    
+
+
+    document.querySelector(".read-dir").onclick = async () => {
+        const directoryHandle = await window.showDirectoryPicker();
+        const regex = /.*lrv/i;
+        for await (const entry of directoryHandle.values()) {
+            if ( regex.test(entry.name) ) {
+                arrFiles.push(entry.name)
+                console.log(entry.kind, entry.name);
+                document.body.appendChild(videoTag(entry.name))
+            }
+        }
+
+    };
+
+
+videoTag=(filename)    => {
+    let video = document.createElement('video');
+    video.width = 432;
+    video.height = 240;
+    video.muted = true;
+    video.poster = `${getBasename(filename)}.THM`;
+    video.onmouseover=function() { stopAll(filename)}
+    video.src = filename;
+    video.id= filename;
+    video.type="video/mp4";
+    return  video;
+}
+
+getBasename=(filename)=> filename.split(".")[0]
+
+ </script>
+</body>
+</html>
